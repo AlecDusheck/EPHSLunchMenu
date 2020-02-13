@@ -25,10 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     'East',
   ];
 
-  String limitTitle(String desc, int limit) {
-    return desc.length > limit ? desc.substring(0, limit) + '...' : desc;
-  }
-
   Widget getImage(Food foodItem) {
     return foodItem.imageUrl == null
         ? Image(
@@ -130,7 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 AutoSizeText(
-                                  limitTitle(menuItem.food.name, 14),
+                                  menuItem.food.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 17.0,
                                     fontWeight: FontWeight.w600,
@@ -138,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 AutoSizeText(
-                                  limitTitle(menuItem.food.description, 20),
+                                  menuItem.food.description,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),
@@ -273,7 +273,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 // By default, show a loading spinner.
-                return CircularProgressIndicator();
+                return Column(
+                  children: <Widget>[
+                    SizedBox(height: 200.0),
+                    CircularProgressIndicator(),
+                  ],
+                );
               },
             )
           ],

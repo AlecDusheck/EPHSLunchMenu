@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ephslunch/models/lunch_items.dart';
 import 'package:flutter/material.dart';
 
@@ -20,12 +21,12 @@ class _DayScreenState extends State<DayScreen> {
     return foodItem.imageUrl == null
         ? Image(
       image: AssetImage('assets/images/image_not_available.jpeg'),
-      width: 120.0,
+      width: 110.0,
       fit: BoxFit.cover,
     )
         : Image.network(
       foodItem.imageUrl,
-      width: 120.0,
+      width: 110.0,
       fit: BoxFit.cover,
     );
   }
@@ -117,7 +118,7 @@ class _DayScreenState extends State<DayScreen> {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
-                        height: 170.0,
+                        height: 250.0,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -135,14 +136,28 @@ class _DayScreenState extends State<DayScreen> {
                                 children: <Widget>[
                                   Container(
                                     width: 120.0,
-                                    child: Text(
-                                      menuItem.food.name,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          menuItem.food.name,
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                        ),
+                                        AutoSizeText(
+                                          menuItem.food.description,
+                                          maxLines: 8,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 8.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -152,7 +167,7 @@ class _DayScreenState extends State<DayScreen> {
                         ),
                       ),
                       Positioned(
-                        left: 20.0,
+                        left: 10.0,
                         top: 15.0,
                         bottom: 15.0,
                         child: ClipRRect(
@@ -169,23 +184,3 @@ class _DayScreenState extends State<DayScreen> {
     );
   }
 }
-
-/*
-Stack(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      iconSize: 30.0,
-                      color: Colors.black,
-                      onPressed: () => Navigator.pop(context),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          )
- */
