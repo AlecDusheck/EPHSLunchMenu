@@ -39,7 +39,8 @@ class _DayScreenState extends State<DayScreen> {
           Stack(
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width / 2,
+                width: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
                   boxShadow: [
@@ -54,8 +55,8 @@ class _DayScreenState extends State<DayScreen> {
                   tag: widget.location.locationName,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30.0),
-                        bottomLeft: Radius.circular(30.0)
+                        bottomRight: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0)
                     ),
                     child: Image(
                       image: AssetImage(widget.location.locationImage),
@@ -65,14 +66,14 @@ class _DayScreenState extends State<DayScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 40.0),
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.arrow_back),
                       iconSize: 30.0,
-                      color: Colors.black,
+                      color: Colors.white,
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -168,8 +169,8 @@ class _DayScreenState extends State<DayScreen> {
                       ),
                       Positioned(
                         left: 10.0,
-                        top: 15.0,
-                        bottom: 15.0,
+                        top: 5.0,
+                        bottom: 5.0,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),
                           child: getImage(menuItem.food),

@@ -5,12 +5,22 @@ import 'package:http/http.dart';
 
 enum Place { OLD_COMMONS, NEW_COMMONS }
 
+/*
+This data was generated using the Nutrislice API.
+I reserve engineered the network requests and implemented it in Dart.
+
+All relevant API endpoints are in this code
+ */
+
+/*
+A location is a store at EPHS. For example, the Coffee Shop
+ */
 class Location {
   String locationName;
   String locationImage;
-  String apiEndpoint;
-  Place place;
-  List<Days> days;
+  String apiEndpoint; // Nutrislice API endpoint
+  Place place; // Old or new commons
+  List<Days> days; // List of days. Each day contains the menu for the day
 
   Location({
     this.locationName,
@@ -19,12 +29,15 @@ class Location {
     this.locationImage,
   });
 
+  /*
+  Populate the location by fetching it from the API
+   */
   Future<void> populate(int weeks) async {
     this.days = [];
     var now = new DateTime.now();
 
     // Cap the weeks
-    weeks = max(4, weeks);
+    weeks = max(4, weeks); // 4 week minimum
 
     // TODO: get for entire month
     for (var dayId = 0; dayId < weeks; dayId++) {
@@ -128,23 +141,34 @@ class MenuItems {
     text = json['text'];
     food = json['food'] != null ? new Food.fromJson(json['food']) : null;
   }
+
+  bool isEqual(MenuItems item) {
+    return item.food == this.food &&
+    item.category == this.category &&
+    item.bold == this.bold &&
+    item.image == this.image &&
+    item.text == this.text;
+  }
 }
 
 class Food {
   String name;
   String description;
   String imageUrl;
+  RoundedNutritionInfo roundedNutritionInfo;
 
   Food({
     this.name,
     this.description,
     this.imageUrl,
+    this.roundedNutritionInfo,
   });
 
   Food.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     description = json['description'];
     imageUrl = json['image_url'];
+    roundedNutritionInfo = json['rounded_nutrition_info'] != null ? new RoundedNutritionInfo.fromJson(json['rounded_nutrition_info']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -153,6 +177,65 @@ class Food {
     data['description'] = this.description;
     data['image_url'] = this.imageUrl;
     return data;
+  }
+
+  bool isEqual(Food item) {
+    return item.name == this.name &&
+    item.imageUrl == this.imageUrl &&
+    item.description == this.description &&
+    item.roundedNutritionInfo == this.roundedNutritionInfo;
+  }
+}
+
+class RoundedNutritionInfo {
+  double gFiber;
+  double gSaturatedFat;
+  double gProtein;
+  double gFat;
+  double calories;
+  double gTransFat;
+  double gCarbs;
+  double gSugar;
+
+  RoundedNutritionInfo({
+    this.gFiber,
+    this.gSaturatedFat,
+    this.gProtein,
+    this.gFat,
+    this.calories,
+    this.gTransFat,
+    this.gCarbs,
+    this.gSugar
+  });
+
+  RoundedNutritionInfo.fromJson(Map<String, dynamic> json) {
+    // Sometimes these are randomly null
+    var gFiber = json['g_fiber'] ?? 0;
+    var gSaturatedFat = json['g_saturated_fat'] ?? 0;
+    var gProtein = json['g_protein'] ?? 0;
+    var gFat = json['g_fat'] ?? 0;
+    var calories = json['calories'] ?? 0;
+    var gTransFat = json['g_trans_fat'] ?? 0;
+    var gCarbs = json['g_carbs'] ?? 0;
+    var gSugar = json['g_sugar'] ?? 0;
+
+    // Convert them all to doubles for easy maths
+    this.gFiber = gFiber.toDouble();
+    this.gSaturatedFat = gSaturatedFat.toDouble();
+    this.gProtein = gProtein.toDouble();
+    this.gFat = gFat.toDouble();
+    this.calories = calories.toDouble();
+    this.gTransFat = gTransFat.toDouble();
+    this.gCarbs = gCarbs.toDouble();
+    this.gSugar = gSugar.toDouble();
+  }
+
+  String toString() {
+    return 'Fiber (g): ' + this.gFiber.toString() + '\n' +
+        'Protein (g): ' + this.gProtein.toString() + '\n' +
+        'Saturated Fat (g): ' + this.gSaturatedFat.toString() + '\n' +
+        'Sugar (g): ' + this.gSugar.toString() + '\n' +
+        'Carbs (g): ' + this.gCarbs.toString();
   }
 }
 
